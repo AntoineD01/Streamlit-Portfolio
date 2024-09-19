@@ -49,6 +49,8 @@ filtered_data_dropoff = pd.DataFrame()
 show_pickup = st.session_state.button
 show_dropoff = not st.session_state.button
 
+#Comparison between pickup and dropoff
+
 if show_pickup:
     st.title("Uber Pickups in New York City (2014)")
     
@@ -108,11 +110,21 @@ st.divider()
 st.write("### Trip Distance Distribution")
 
 # Histogram of trip distances
-plt.figure(figsize=(8, 6))
-plt.hist(data2['trip_distance'], bins=50, color='#406E8E', alpha=0.7)
-plt.title('Distribution of Trip Distances')
-plt.xlabel('Trip Distance (miles)')
-plt.ylabel('Number of Trips')
+fig, ax = plt.subplots(figsize=(8, 6))
+fig.patch.set_facecolor('#0f1116')
+ax.hist(data2['trip_distance'], bins=50, color='#93c7fa', alpha=0.7)
+ax.set_facecolor('#0f1116')  # Background color inside the plot
+
+ax.set_title('Distribution of Trip Distances', color='#ffffff', fontsize=16)
+ax.set_xlabel('Trip Distance (miles)', color='#ffffff', fontsize=12)
+ax.set_ylabel('Number of Trips', color='#ffffff', fontsize=12)
+ax.tick_params(axis='x', colors='#ffffff')  # X-axis ticks
+ax.tick_params(axis='y', colors='#ffffff')  # Y-axis ticks
+ax.spines['bottom'].set_color('#ffffff')  # X-axis color
+ax.spines['left'].set_color('#ffffff')  # Y-axis color
+ax.spines['top'].set_visible(False)  # Turn off top spine
+ax.spines['right'].set_visible(False)  # Turn off right spine
+
 st.pyplot(plt)
 
 
@@ -130,7 +142,6 @@ total_revenue_per_hour = data2.resample('H', on='tpep_pickup_datetime')['total_r
 st.line_chart(total_revenue_per_hour)
 
 st.divider()
-
 
 st.write("### Average Speed of Trips Over Time")
 
@@ -167,7 +178,7 @@ mae = mean_absolute_error(y_test, y_pred)
 r2 = r2_score(y_test, y_pred)
 
 # Display model performance
-st.write(f"### Model Performance")
+st.write(f"### Machine Learning Model Predicting Fare Amount")
 st.write(f"The margin of error (MAE) is around : ${mae:.2f}")
 
 # Allow the user to input a distance to predict the fare
