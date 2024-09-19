@@ -19,11 +19,23 @@ data2 = load_data()
 # Title
 st.title("🚗 Uber Data Analysis")
 
-show_pickup = st.checkbox("Show Pickup Data", value=True)
-show_dropoff = st.checkbox("Show Dropoff Data", value=False)
+# Initialize session state for button
+if 'button' not in st.session_state:
+    st.session_state.button = False
+
+# Function to toggle the button state
+def click_button():
+    st.session_state.button = not st.session_state.button
+
+# Create a button in the sidebar to toggle the data display
+st.button("Toggle Pickup/Dropoff Data", on_click=click_button)
 
 filtered_data_pickup = pd.DataFrame()
 filtered_data_dropoff = pd.DataFrame()
+
+# Use session state to determine which data to show
+show_pickup = st.session_state.button
+show_dropoff = not st.session_state.button
 
 if show_pickup:
     filtered_data_pickup = data2[['tpep_pickup_datetime', 'pickup_latitude', 'pickup_longitude']]
@@ -44,13 +56,10 @@ data2['tpep_dropoff_datetime'] = pd.to_datetime(data2['tpep_dropoff_datetime'])
 
 if show_pickup and show_dropoff:
     st.write("### Showing both Pickup and Dropoff Data")
-    filtered_data_pickup.columns = ['tpep_pickup_datetime', 'latitude', 'longitude']
-    filtered_data_dropoff.columns = ['tpep_pickup_datetime', 'latitude', 'longitude']
-    filtered_data = pd.concat([filtered_data_pickup, filtered_data_dropoff])
+    
 elif show_pickup:
     st.title("Uber Pickups in New York City (2014)")
-    filtered_data = filtered_data_pickup.rename(columns={'pickup_latitude': 'latitude', 'pickup_longitude': 'longitude'})
-
+    
     ### Visualization 1: Bar Chart of Pickups by Hour ###
     st.subheader(f"1. Pickups over time (All Data)")
     hourly_pickups_filtered = data2['tpep_pickup_datetime'].dt.hour.value_counts().sort_index()
@@ -59,8 +68,7 @@ elif show_pickup:
 
 elif show_dropoff:
     st.title("Uber Dropoffs in New York City (2014)")
-    filtered_data = filtered_data_dropoff.rename(columns={'dropoff_latitude': 'latitude', 'dropoff_longitude': 'longitude'})
-
+    
     ### Visualization 1: Bar Chart of Pickups by Hour ###
     st.subheader(f"1. Pickups over time (All Data)")
     hourly_dropoffs_filtered = data2['tpep_dropoff_datetime'].dt.hour.value_counts().sort_index()
