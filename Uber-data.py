@@ -37,12 +37,6 @@ filtered_data_dropoff = pd.DataFrame()
 show_pickup = st.session_state.button
 show_dropoff = not st.session_state.button
 
-if show_pickup:
-    filtered_data_pickup = data2[['tpep_pickup_datetime', 'pickup_latitude', 'pickup_longitude']]
-
-if show_dropoff:
-    filtered_data_dropoff = data2[['tpep_pickup_datetime', 'dropoff_latitude', 'dropoff_longitude']]
-
 # Add a new column for tip/fare ratio
 data2['tip/fare'] = data2['tip_amount'] / data2['fare_amount']
 
@@ -53,11 +47,7 @@ data2['tpep_pickup_datetime'] = pd.to_datetime(data2['tpep_pickup_datetime'])
 data2['tpep_dropoff_datetime'] = pd.to_datetime(data2['tpep_dropoff_datetime'])
 
 
-
-if show_pickup and show_dropoff:
-    st.write("### Showing both Pickup and Dropoff Data")
-    
-elif show_pickup:
+if show_pickup:
     st.title("Uber Pickups in New York City (2014)")
     
     ### Visualization 1: Bar Chart of Pickups by Hour ###
@@ -65,26 +55,33 @@ elif show_pickup:
     hourly_pickups_filtered = data2['tpep_pickup_datetime'].dt.hour.value_counts().sort_index()
     st.bar_chart(hourly_pickups_filtered, color = '#23395B')
 
+    # Data per hour
+    st.write("### Filter the data per hour ###")
+    hour = st.slider("Select Hour to Filter Data", 0, 23)
+
+    filtered_data1 = data2[data2['tpep_pickup_datetime'].dt.hour == hour]
+
+    pickup_counts_by_minute = filtered_data1.set_index('tpep_pickup_datetime').resample('T').size()
+    st.line_chart(pickup_counts_by_minute)
+
 
 elif show_dropoff:
     st.title("Uber Dropoffs in New York City (2014)")
     
     ### Visualization 1: Bar Chart of Pickups by Hour ###
-    st.subheader(f"1. Pickups over time (All Data)")
+    st.subheader(f"1. Dropoffs over time (All Data)")
     hourly_dropoffs_filtered = data2['tpep_dropoff_datetime'].dt.hour.value_counts().sort_index()
     st.bar_chart(hourly_dropoffs_filtered, color='#CBF7ED')
 
+    # Data per hour
+    st.write("### Filter the data per hour ###")
+    hour1 = st.slider("Select Hour to Filter Data", 0, 23)
+
+    filtered_data2 = data2[data2['tpep_dropoff_datetime'].dt.hour == hour1]
+
+    dropoff_counts_by_minute = filtered_data2.set_index('tpep_dropoff_datetime').resample('T').size()
+    st.line_chart(dropoff_counts_by_minute)
 
 
-# Data per hour
-st.write("### Filter the data per hour ###")
-hour = st.slider("Select Hour to Filter Data", 0, 23)
-
-filtered_data = data2[data2['tpep_pickup_datetime'].dt.hour == hour]
-
-### Visualization 1: Line Chart of Pickups over Time ###
-# Resample data by minute and count pickups
-pickup_counts_by_minute = filtered_data.set_index('tpep_pickup_datetime').resample('T').size()
-st.line_chart(pickup_counts_by_minute)
-
+st.divider()
 
