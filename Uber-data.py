@@ -28,6 +28,12 @@ data2['tpep_dropoff_datetime'] = pd.to_datetime(data2['tpep_dropoff_datetime'])
 
 data2 = data2[(data2['fare_amount'] > 0) & (data2['trip_distance'] > 0)]
 
+# Filter out invalid longitude values in pickup locations
+data2 = data2[
+    (data2['pickup_longitude'] >= -74.2) & 
+    (data2['pickup_longitude'] <= -73.9)
+]
+
 # The button feature
 if 'button' not in st.session_state:
     st.session_state.button = False
@@ -42,8 +48,6 @@ filtered_data_dropoff = pd.DataFrame()
 
 show_pickup = st.session_state.button
 show_dropoff = not st.session_state.button
-
-
 
 if show_pickup:
     st.title("Uber Pickups in New York City (2014)")
@@ -60,7 +64,16 @@ if show_pickup:
     filtered_data1 = data2[data2['tpep_pickup_datetime'].dt.hour == hour]
 
     pickup_counts_by_minute = filtered_data1.set_index('tpep_pickup_datetime').resample('T').size()
-    st.line_chart(pickup_counts_by_minute)
+    st.line_chart(pickup_counts_by_minute, color = '#23395B')
+
+    # Rename columns for pickup locations
+    pickup_locations = data2[['pickup_latitude', 'pickup_longitude']].rename(columns={
+    'pickup_latitude': 'lat',
+    'pickup_longitude': 'lon'
+    })
+
+    st.write("### Pickup Locations in NYC")
+    st.map(pickup_locations, color = '#23395B')
 
 
 elif show_dropoff:
@@ -78,28 +91,16 @@ elif show_dropoff:
     filtered_data2 = data2[data2['tpep_dropoff_datetime'].dt.hour == hour1]
 
     dropoff_counts_by_minute = filtered_data2.set_index('tpep_dropoff_datetime').resample('T').size()
-    st.line_chart(dropoff_counts_by_minute)
+    st.line_chart(dropoff_counts_by_minute, color='#CBF7ED')
 
-
-st.divider()
-
-# Rename columns for pickup locations
-pickup_locations = data2[['pickup_latitude', 'pickup_longitude']].rename(columns={
-    'pickup_latitude': 'lat',
-    'pickup_longitude': 'lon'
-})
-
-st.write("### Pickup Locations in NYC")
-st.map(pickup_locations)
-
-# Rename columns for dropoff locations
-dropoff_locations = data2[['dropoff_latitude', 'dropoff_longitude']].rename(columns={
+    # Rename columns for dropoff locations
+    dropoff_locations = data2[['dropoff_latitude', 'dropoff_longitude']].rename(columns={
     'dropoff_latitude': 'lat',
     'dropoff_longitude': 'lon'
-})
+    })
 
-st.write("### Dropoff Locations in NYC")
-st.map(dropoff_locations)
+    st.write("### Dropoff Locations in NYC")
+    st.map(dropoff_locations, zoom=9, color='#CBF7ED')
 
 
 st.divider()
