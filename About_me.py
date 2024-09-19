@@ -1,21 +1,9 @@
 import streamlit as st
 from st_social_media_links import SocialMediaIcons
 
-social_media_links = [
-    "https://linkedin.com/in/antoine-dupont0",
-    "https://github.com/antoinedupont",
-]
-
-
 st.title("Antoine Dupont")
 st.write("**Data Scientist** | **AI Enthusiast** | **Engineer**")
 st.write("Location: Paris, France")
-
-social_media_icons = SocialMediaIcons(social_media_links)
-social_media_icons.render()
-st.divider()
-
-
 
     # About Me
 st.header("About Me")
@@ -74,8 +62,15 @@ st.write("2021 - 2026")
 st.header("Contact Me")
 st.write("Feel free to reach out to me via email or LinkedIn. I'm always open to discussing new opportunities and collaborations!")
 st.write("📧 **Email:** antoine.dupont@efrei.net")
-st.write("💼 **LinkedIn:** [Antoine Dupont](https://linkedin.com/in/antoine-dupont0)")
 
     # Footer
 st.write("---")
+social_media_links = [
+    "https://linkedin.com/in/antoine-dupont0",
+    "https://github.com/antoinedupont",
+]
+
+social_media_icons = SocialMediaIcons(social_media_links)
+social_media_icons.render()
+st.write("\n\n")
 st.write("Created using [Streamlit](https://streamlit.io/) | © 2024 Antoine Dupont")
