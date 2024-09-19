@@ -114,8 +114,7 @@ fig, ax = plt.subplots(figsize=(8, 6))
 fig.patch.set_facecolor('#0f1116')
 ax.hist(data2['trip_distance'], bins=50, color='#93c7fa', alpha=0.7)
 ax.set_facecolor('#0f1116')  # Background color inside the plot
-
-ax.set_title('Distribution of Trip Distances', color='#ffffff', fontsize=16)
+ax.set_xlim(0, 20)
 ax.set_xlabel('Trip Distance (miles)', color='#ffffff', fontsize=12)
 ax.set_ylabel('Number of Trips', color='#ffffff', fontsize=12)
 ax.tick_params(axis='x', colors='#ffffff')  # X-axis ticks
@@ -136,7 +135,7 @@ st.write("### Total Revenue Over Time")
 data2['total_revenue'] = data2['fare_amount'] + data2['tip_amount']
 
 # Resample data by hour and calculate total revenue per hour
-total_revenue_per_hour = data2.resample('H', on='tpep_pickup_datetime')['total_revenue'].sum()
+total_revenue_per_hour = data2.resample('h', on='tpep_pickup_datetime')['total_revenue'].sum()
 
 # Plot line chart of revenue over time
 st.line_chart(total_revenue_per_hour)
@@ -153,7 +152,7 @@ data2.loc[data2['trip_time_hours'] == 0, 'trip_time_hours'] = np.nan
 data2['speed_mph'] = data2['trip_distance'] / data2['trip_time_hours']
 
 # Resample to hourly average speed
-avg_speed_per_hour = data2.resample('H', on='tpep_pickup_datetime')['speed_mph'].mean()
+avg_speed_per_hour = data2.resample('h', on='tpep_pickup_datetime')['speed_mph'].mean()
 
 # Plot line chart of average speed over time
 st.line_chart(avg_speed_per_hour)
