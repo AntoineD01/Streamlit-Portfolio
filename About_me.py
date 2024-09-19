@@ -1,10 +1,20 @@
 import streamlit as st
+from st_social_media_links import SocialMediaIcons
+
+social_media_links = [
+    "https://linkedin.com/in/antoine-dupont0",
+    "https://github.com/antoinedupont",
+]
+
 
 st.title("Antoine Dupont")
-st.write("👨‍💻 **Data Scientist** | **AI Enthusiast** | **Engineer**")
+st.write("**Data Scientist** | **AI Enthusiast** | **Engineer**")
 st.write("Location: Paris, France")
-st.write("💼 [LinkedIn](https://linkedin.com/in/antoine-dupont0)")
-st.write("💻 [GitHub](https://github.com/antoinedupont)")
+
+social_media_icons = SocialMediaIcons(social_media_links)
+social_media_icons.render()
+st.divider()
+
 
 
     # About Me
