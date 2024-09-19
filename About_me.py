@@ -67,7 +67,7 @@ st.write("📧 **Email:** antoine.dupont@efrei.net")
 st.write("---")
 social_media_links = [
     "https://linkedin.com/in/antoine-dupont0",
-    "https://github.com/antoinedupont",
+    "https://github.com/AntoineD01",
 ]
 
 social_media_icons = SocialMediaIcons(social_media_links)

@@ -65,7 +65,7 @@ if show_pickup:
 
     filtered_data1 = data2[data2['tpep_pickup_datetime'].dt.hour == hour]
 
-    pickup_counts_by_minute = filtered_data1.set_index('tpep_pickup_datetime').resample('T').size()
+    pickup_counts_by_minute = filtered_data1.set_index('tpep_pickup_datetime').resample('min').size()
     st.line_chart(pickup_counts_by_minute, color = '#23395B')
 
     # Rename columns for pickup locations
@@ -92,7 +92,9 @@ elif show_dropoff:
 
     filtered_data2 = data2[data2['tpep_dropoff_datetime'].dt.hour == hour1]
 
-    dropoff_counts_by_minute = filtered_data2.set_index('tpep_dropoff_datetime').resample('T').size()
+    st.write(filtered_data2.head())
+
+    dropoff_counts_by_minute = filtered_data2.set_index('tpep_dropoff_datetime').resample('min').size()
     st.line_chart(dropoff_counts_by_minute, color='#CBF7ED')
 
     # Rename columns for dropoff locations
