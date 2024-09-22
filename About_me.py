@@ -13,8 +13,6 @@ st.write("""
     impactful solutions.
     """)
 
-#Tests
-
 
 # Skills
 st.header("Skills Overview")
