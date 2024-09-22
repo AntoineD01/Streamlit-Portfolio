@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 import random
+import os
 
 
 st.title("🏠 Home")
@@ -48,22 +49,31 @@ questions = [
     },
 ]
 
-random_activities = ['Drawing', 'Quizz', 'Fun Fact']
+vote_file = "votes.txt"
+
+if 'vote_counts' not in st.session_state:
+    st.session_state.vote_counts = {}
+
+    # Read existing votes from the file
+    if os.path.exists(vote_file):
+        with open(vote_file, "r") as f:
+            for line in f:
+                fruit, count = line.strip().split(':')
+                st.session_state.vote_counts[fruit] = int(count)
+    else:
+        # Initialize the vote counts if the file doesn't exist
+        fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Grapes']
+        st.session_state.vote_counts = {fruit: 0 for fruit in fruits}
+
+random_activities = ['Drawing', 'Quizz', 'Fun Fact', 'Fun Poll']
 
 def click_button():
-    st.session_state.activity = random.choice(random_activities)
-
-def click_submit(selected_answer):
-    if selected_answer == questions[st.session_state.question_index]["answer"]:
-        st.session_state.score += 1
-        st.success("Correct!")
-    else:
-        st.error(f"Wrong! The correct answer is: {questions[st.session_state.question_index]['answer']}")
-    st.session_state.question_index += 1
-    
-def click_new_quiz():
-    st.session_state.question_index = 0
-    st.session_state.score = 0
+    last_activity = st.session_state.activity
+    while True:
+        new_activity = random.choice(random_activities)
+        if new_activity != last_activity:
+            st.session_state.activity = new_activity
+            break
 
 
 st.button("Next funny activity !", on_click=click_button)
@@ -72,9 +82,6 @@ st.write("---")
 
 if st.session_state.activity:
     if st.session_state.activity == 'Drawing':
-        st.write("## Let's draw something!")
-        # Drawing tool
-
         drawing_mode = st.selectbox(
             "Drawing tool:",
             ("freedraw", "line", "rect", "circle", "transform", "polygon", "point"),
@@ -94,10 +101,21 @@ if st.session_state.activity:
             height=150,
             drawing_mode=drawing_mode,
             point_display_radius=point_display_radius if drawing_mode == "point" else 0,
-            display_toolbar=st.sidebar.checkbox("Display toolbar", True),
             key="full_app",
         )
     elif st.session_state.activity == 'Quizz':
+        def click_submit(selected_answer):
+            if selected_answer == questions[st.session_state.question_index]["answer"]:
+                st.session_state.score += 1
+                st.success("Correct!")
+            else:
+                st.error(f"Wrong! The correct answer is: {questions[st.session_state.question_index]['answer']}")
+            st.session_state.question_index += 1
+        
+        def click_new_quiz():
+            st.session_state.question_index = 0
+            st.session_state.score = 0
+        
         st.header("Test Your Knowledge!")
         
         if st.session_state.question_index < len(questions):
@@ -107,16 +125,46 @@ if st.session_state.activity:
         else:
             st.write(f"Quiz finished! Your score: {st.session_state.score}/{len(questions)}")
             st.button("Restart Quiz", on_click = click_new_quiz)
-        
-        
-
+    
     elif st.session_state.activity == 'Fun Fact':
-        st.write("Learn Something Fun")
+        st.write("### Did you know?")
         fun_facts = [
-                "I’m a huge fan of chess and often play online.",
-                "I love hiking and exploring nature trails.",
-                "I’ve worked on over 10 different data science projects."
-            ]    
+        "Octopuses have three hearts: two pump blood to the gills, while the third pumps it to the rest of the body.",
+        "Bananas are berries: botanically speaking, bananas fit the definition of a berry, while strawberries do not.",
+        "Honey never spoils: archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
+        "A day on Venus is longer than a year: it takes Venus about 243 Earth days to rotate once on its axis but only about 225 Earth days to orbit the sun.",
+        "Wombat poop is cube-shaped: this unique shape prevents their droppings from rolling away and marks their territory.",
+        "The Eiffel Tower can be 15 cm taller in the summer: when the temperature rises, the iron expands, causing the tower to grow slightly.",
+        "Turtles can breathe through their butts: some species of turtles can absorb oxygen through their cloaca, allowing them to stay underwater longer.",
+        "Cows have best friends: research shows that cows are social animals and often have strong bonds with specific companions.",
+        "The human nose can detect over 1 trillion scents: while it's commonly said we can only detect about 10,000 smells, recent research suggests the number is much higher.",
+        "Dolphins have names for each other: they use unique whistles to identify and call out to one another, similar to how humans use names."
+        ]
         st.write(random.choice(fun_facts))
+        def click_fun_fact():
+            st.write(random.choice(fun_facts))
+
+        st.button("Next fun fact", on_click=click_fun_fact)
+
+    elif st.session_state.activity == 'Fun Poll':
+        st.header("Vote for Your Favorite Fruit!")
+        fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Grapes']
+
+        selected_fruit = st.radio("Which fruit do you like the most?", fruits)
+
+        if st.button("Vote"):
+            # Update the vote count
+            st.session_state.vote_counts[selected_fruit] += 1
+            st.success(f"You voted for: {selected_fruit}!")
+
+            # Write updated votes to the file
+            with open(vote_file, "w") as f:
+                for fruit, count in st.session_state.vote_counts.items():
+                    f.write(f"{fruit}:{count}\n")
+
+        # Display the voting results
+        st.write("### Current Vote Counts:")
+        for fruit, count in st.session_state.vote_counts.items():
+            st.write(f"{fruit}: {count} votes")
 else:
     st.write("Click the button to see a fun activity!")

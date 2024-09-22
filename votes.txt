@@ -1,0 +1,5 @@
+Apple:0
+Banana:1
+Cherry:0
+Date:0
+Grapes:0
