@@ -5,7 +5,7 @@ st.title("Antoine Dupont")
 st.write("**Data Scientist** | **AI Enthusiast** | **Engineer**")
 st.write("Location: Paris, France")
 
-    # About Me
+# About Me
 st.header("About Me")
 st.write("""
     I am a Data Scientist with a background in engineering. I have worked on numerous projects involving data analysis, 
@@ -13,17 +13,37 @@ st.write("""
     impactful solutions.
     """)
 
-    # Skills
-st.header("Skills")
-st.write("""
-    - **Programming Languages:** Python, PowerBI, SQL
-    - **Data Analysis & Visualization:** Pandas, NumPy, Matplotlib, Seaborn, Plotly, Streamlit
-    - **Machine Learning:** Scikit-learn, XGBoost
-    - **Web Development:** Flask, Streamlit
-    - **Other Tools:** Git, Jupyter, VSCode
-    """)
+#Tests
 
-    # Experience
+
+# Skills
+st.header("Skills Overview")
+
+st.title('**Programming Languages:**')
+st.write("**Python (and related libraries**")
+st.progress(90)
+st.write("**SQL**")
+st.progress(70)
+st.write("**PowerBI**")
+st.progress(50)
+
+st.title('**Machine Learning:**')
+st.write("**Scikit-learn**")
+st.progress(65)
+st.write("**XGBoost**")
+st.progress(35)
+
+st.title('**Other Tools:**')
+st.write("**Git**")
+st.progress(70)
+st.write("**Jupyter**")
+st.progress(80)
+st.write("**VSCode**")
+st.progress(80)
+st.write('**Excel**')
+st.progress(75)
+
+# Experience
 st.header("Experience")
 st.write("### Private tutor | Acadomia")
 st.write("""
@@ -39,7 +59,7 @@ st.write("""
     - Display products attractively.
     """)
 
-    # Projects Section
+# Projects Section
 st.header("Projects")
 st.write("### 1. Uber Data Analysis")
 st.write("""
@@ -53,17 +73,17 @@ st.write("""
     - **Technologies used:** Python, Scikit-learn, Pandas
     """)
 
-    # Education
+# Education
 st.header("Education")
 st.write("### Master of Science in Data Engineering | Efrei Paris")
 st.write("2021 - 2026")
 
-    # Contact Section
+# Contact Section
 st.header("Contact Me")
 st.write("Feel free to reach out to me via email or LinkedIn. I'm always open to discussing new opportunities and collaborations!")
 st.write("📧 **Email:** antoine.dupont@efrei.net")
 
-    # Footer
+# Footer
 st.write("---")
 social_media_links = [
     "https://linkedin.com/in/antoine-dupont0",
