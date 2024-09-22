@@ -1,5 +1,20 @@
-Apple:0
-Banana:1
+Apple:2
+Banana:2
 Cherry:0
 Date:0
 Grapes:0
+New York:4
+Los Angeles:1
+Chicago:0
+Paris:0
+Marseille:0
+Dog:1
+Cat:0
+Elephant:1
+Tiger:0
+Giraffe:0
+Red:3
+Blue:0
+Green:0
+Yellow:0
+Purple:0

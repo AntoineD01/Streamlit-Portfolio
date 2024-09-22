@@ -147,24 +147,62 @@ if st.session_state.activity:
         st.button("Next fun fact", on_click=click_fun_fact)
 
     elif st.session_state.activity == 'Fun Poll':
-        st.header("Vote for Your Favorite Fruit!")
-        fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Grapes']
+        st.header("Express Your Opinion!")
+        
+        if 'current_poll' not in st.session_state:
+            st.session_state.current_poll = random.choice(['Fruit', 'City', 'Color', 'Animal'])
 
-        selected_fruit = st.radio("Which fruit do you like the most?", fruits)
+        def conduct_poll(poll_type):
+            # Define options based on poll type
+            if poll_type == 'Fruit':
+                options = ['Apple', 'Banana', 'Cherry', 'Date', 'Grapes']
+            elif poll_type == 'City':
+                options = ['New York', 'Los Angeles', 'Chicago', 'Paris', 'Marseille']
+            elif poll_type == 'Color':
+                options = ['Red', 'Blue', 'Green', 'Yellow', 'Purple']
+            elif poll_type == 'Animal':
+                options = ['Dog', 'Cat', 'Elephant', 'Tiger', 'Giraffe']
+            else:
+                return st.error("Invalid poll type!")
 
-        if st.button("Vote"):
-            # Update the vote count
-            st.session_state.vote_counts[selected_fruit] += 1
-            st.success(f"You voted for: {selected_fruit}!")
+            # Initialize vote counts if not already done
+            if 'vote_counts' not in st.session_state:
+                st.session_state.vote_counts = {option: 0 for option in options}
+            else:
+                # Ensure all options are included in vote counts
+                for option in options:
+                    if option not in st.session_state.vote_counts:
+                        st.session_state.vote_counts[option] = 0
 
-            # Write updated votes to the file
-            with open(vote_file, "w") as f:
-                for fruit, count in st.session_state.vote_counts.items():
-                    f.write(f"{fruit}:{count}\n")
+            selected_option = st.radio(f"Which {poll_type.lower()} do you like the most?", options)
 
-        # Display the voting results
-        st.write("### Current Vote Counts:")
-        for fruit, count in st.session_state.vote_counts.items():
-            st.write(f"{fruit}: {count} votes")
+            if st.button("Vote"):
+                # Update the vote count
+                st.session_state.vote_counts[selected_option] += 1
+                st.success(f"You voted for: {selected_option}!")
+
+                # Write updated votes to the file
+                with open(vote_file, "w") as f:
+                    for option, count in st.session_state.vote_counts.items():
+                        f.write(f"{option}:{count}\n")
+                    
+                # Display results for the specific poll type
+                display_result(options)
+
+            # Button to go to the next poll
+            if st.button("Next Poll"):
+                st.session_state.current_poll = random.choice(['Fruit', 'City', 'Color', 'Animal'])
+                # Do not call rerun, simply let the streamlit script handle the new state
+
+        def display_result(options):
+            st.write("### Poll Results:")
+            for option in options:
+                count = st.session_state.vote_counts[option]
+                st.write(f"{option}: {count} votes")
+
+        # Conduct the selected poll
+        conduct_poll(st.session_state.current_poll)
+
+
 else:
     st.write("Click the button to see a fun activity!")
