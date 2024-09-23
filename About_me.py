@@ -75,6 +75,7 @@ st.write("""
 st.header("Education")
 st.write("### Master of Science in Data Engineering | Efrei Paris")
 st.write("2021 - 2026")
+st.progress(80)
 
 # Contact Section
 st.header("Contact Me")

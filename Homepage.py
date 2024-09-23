@@ -10,7 +10,7 @@ st.write("Hello! I'm Antoine Dupont, a data scientist with a passion for AI, mac
          "I have experience in developing data-driven solutions and enjoy working on projects that turn data into insights.")
 
 
-st.write("#### The button feature")
+st.write("#### Here are some cool stuff")
 
 if 'activity' not in st.session_state:
     st.session_state.activity = None
