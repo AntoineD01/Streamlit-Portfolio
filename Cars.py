@@ -1,20 +1,28 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-
+import matplotlib.pyplot as plt
+import seaborn as sns
+from geopy.geocoders import Nominatim
+import time
 
 @st.cache_data
 def load_data():
-    try:
-        # Use on_bad_lines to handle bad lines in the CSV
-        data = pd.read_csv('cars.csv', delimiter=';', on_bad_lines='warn')
-        return data
-    except Exception as e:
-        st.error(f"An error occurred while loading the data: {e}")
-        return pd.DataFrame()
+    data = pd.read_csv('cars.csv', delimiter=';')
+    return data
+    
+data = load_data()
 
-data1 = load_data()
+st.title('Electric Vehicle Dataset')
+st.write('This dataset contains information about electric vehicles.')
 
-st.title('Cars Dataset')
-st.write('This dataset contains information about cars.')
-st.dataframe(data1.describe())
+#Cleaning the data
+
+#We convert codgeo to int
+data['codgeo'] = data['codgeo'].astype(str)
+
+data = data[~data['codgeo'].str.startswith('2A')]
+data = data[~data['codgeo'].str.startswith('2B')]
+
+data['codgeo'] = data['codgeo'].astype(int)
+
+data['date_arrete'] = pd.to_datetime(data['date_arrete'])
