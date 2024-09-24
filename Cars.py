@@ -7,7 +7,8 @@ import time
 
 @st.cache_data
 def load_data():
-    data = pd.read_csv('cars.csv', delimiter=';')
+    data = pd.read_csv('cars.csv', delimiter=',')  
+    data.columns = data.columns.str.strip()  # Strip whitespace from column names
     return data
     
 data = load_data()
@@ -16,7 +17,7 @@ st.title('Electric Vehicle Dataset')
 st.write('This dataset contains information about electric vehicles.')
 
 #Cleaning the data
-
+st.write(data.head())
 #We convert codgeo to int
 data['codgeo'] = data['codgeo'].astype(str)
 
