@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from streamlit_folium import folium_static
 import plotly.express as px
-
+import plotly.graph_objects as go
 
 @st.cache_data
 def load_data():
@@ -71,7 +71,8 @@ vehicles_over_time = data.groupby('year')['nb_vp_rechargeables_el'].sum().reset_
 fig = px.bar(vehicles_over_time, 
              x='year', 
              y='nb_vp_rechargeables_el', 
-             color_discrete_sequence=['#8EA8C3'])  
+             color_discrete_sequence=['#8EA8C3'],
+             labels={'nb_vp_rechargeables_el': 'Number of Rechargeable Vehicles', 'year': 'Year'})  
 
 
 
@@ -127,8 +128,9 @@ fig = px.line(total_vehicles_over_time,
               x='date_arrete', 
               y='nb_vp', 
               markers=True, 
-              title='Total Vehicles Over Time',
-              line_shape='linear')
+              line_shape='linear',
+              labels={'nb_vp': 'Total Vehicles', 'date_arrete': 'Date'},
+              )
 
 fig.update_traces(line_color='#23395B', marker_color='#406E8E')
 
@@ -139,11 +141,7 @@ st.plotly_chart(fig)
 
 st.divider()
 
-
-
-# 4. Visualization: Number of Electric Vehicle Charging Stations per Region
-st.subheader('4. Number of Electric Vehicle Charging Stations per Region')
-
+st.subheader('4. Total Number of Vehicles per Region (Electric vs Non-Electric)')
 # Extract the department from the 'codgeo' column (first two digits)
 data['department_code'] = data['codgeo'].astype(str).str[:2]
 
@@ -162,21 +160,82 @@ region_data['nb_vp_non_electric'] = region_data['nb_vp'] - region_data['nb_vp_re
 # Sort regions by total number of vehicles (nb_vp) in descending order
 region_data = region_data.sort_values(by='nb_vp', ascending=False)
 
-# Plotting the total number of vehicles and electric vehicles per region as stacked bars
-plt.figure(figsize=(12, 8))
+# Create a stacked bar chart with Plotly
+fig = go.Figure()
 
-# Plot the non-electric vehicles
-sns.barplot(x='nb_vp', y='region', data=region_data, label='Non-Electric Vehicles', color='lightblue')
+# Add Non-Electric Vehicles trace
+fig.add_trace(go.Bar(
+    x=region_data['nb_vp'],
+    y=region_data['region'],
+    orientation='h',  # Horizontal bar
+    name='Non-Electric Vehicles',
+    marker=dict(color='lightblue')
+))
 
-# Plot the electric vehicles on top (stacked)
-sns.barplot(x='nb_vp_rechargeables_el', y='region', data=region_data, label='Electric Vehicles', color='darkblue')
+# Add Electric Vehicles trace
+fig.add_trace(go.Bar(
+    x=region_data['nb_vp_rechargeables_el'],
+    y=region_data['region'],
+    orientation='h',  # Horizontal bar
+    name='Electric Vehicles',
+    marker=dict(color='darkblue')
+))
 
-# Add labels and legend
-plt.title('Total Number of Vehicles per Region (Electric vs Non-Electric)')
-plt.ylabel('Region')
-plt.xlabel('Number of Vehicles')
-plt.legend(loc='upper right')
-plt.tight_layout()
+# Update the layout
+fig.update_layout(
+    barmode='stack',
+    xaxis_title='Number of Vehicles',
+    yaxis_title='Region',
+    legend_title='Vehicle Type',
+    template='plotly_white',
+    height=800
+)
 
-# Show the plot in Streamlit
-st.pyplot(plt)
+# Show the Plotly chart in Streamlit
+st.plotly_chart(fig)
+
+st.divider()
+
+# 5. Ranking of Regions by Percentage of Electric Vehicles
+st.subheader('5. Ranking of Regions by Percentage of Electric Vehicles')
+# Extract the department from the 'codgeo' column (first two digits)
+data['department_code'] = data['codgeo'].astype(str).str[:2]
+
+# Map department codes to regions
+data['region'] = data['department_code'].map(dept_to_region)
+
+# Aggregate data by region (sum the number of electric vehicles and total vehicles)
+region_data = data.groupby('region').agg({
+    'nb_vp_rechargeables_el': 'sum',
+    'nb_vp': 'sum'
+}).reset_index()
+
+# Calculate the percentage of electric vehicles for each region     
+region_data['electric_vehicle_percentage'] = (region_data['nb_vp_rechargeables_el'] / region_data['nb_vp'])*100
+
+# Sort regions by the percentage of electric vehicles in descending order
+region_data = region_data.sort_values(by='electric_vehicle_percentage', ascending=False)
+
+# Plot the ranking of regions by percentage of electric vehicles using Plotly
+fig = px.bar(
+    region_data,
+    x='electric_vehicle_percentage',
+    y='region',
+    orientation='h',
+    color='electric_vehicle_percentage',
+    color_continuous_scale='Blues',
+    labels={'electric_vehicle_percentage': 'Percentage of Electric Vehicles (%)', 'region': 'Region'},
+    height=800
+)
+
+# Update the layout to display the x-axis as a percentage
+fig.update_layout(
+    xaxis_tickformat='.2f%',  # Set tick format to percentage with 2 decimal places
+    xaxis_range=[0, 5],     # Set x-axis range to go from 0 to 100%
+    xaxis_title='Percentage of Electric Vehicles (%)',
+    yaxis_title='Region',
+    coloraxis_colorbar=dict(title="Percentage of EVs (%)")
+)
+
+# Show the Plotly chart in Streamlit
+st.plotly_chart(fig)
