@@ -15,7 +15,7 @@ def load_data():
 data = load_data()
 
 st.title('Electric Vehicle Dataset')
-st.write('This dataset contains information about electric vehicles.')
+st.write('This dataset contains information about electric vehicles and non-electric vehicles in France.')
 
 #Cleaning the data
 #We convert codgeo to int and delete corsica
@@ -134,13 +134,12 @@ fig = px.line(total_vehicles_over_time,
 
 fig.update_traces(line_color='#23395B', marker_color='#406E8E')
 
-
-
 # Display the Plotly chart in Streamlit
 st.plotly_chart(fig)
 
 st.divider()
 
+# 4. Total Number of Vehicles per Region (Electric vs Non-Electric)
 st.subheader('4. Total Number of Vehicles per Region (Electric vs Non-Electric)')
 # Extract the department from the 'codgeo' column (first two digits)
 data['department_code'] = data['codgeo'].astype(str).str[:2]
@@ -169,7 +168,7 @@ fig.add_trace(go.Bar(
     y=region_data['region'],
     orientation='h',  # Horizontal bar
     name='Non-Electric Vehicles',
-    marker=dict(color='lightblue')
+    marker=dict(color='#23395B', line=dict(width=0))  # Remove border around bars
 ))
 
 # Add Electric Vehicles trace
@@ -178,17 +177,18 @@ fig.add_trace(go.Bar(
     y=region_data['region'],
     orientation='h',  # Horizontal bar
     name='Electric Vehicles',
-    marker=dict(color='darkblue')
+    marker=dict(color='#406E8E', line=dict(width=0))  # Remove border around bars
 ))
 
-# Update the layout
+# Update the layout to remove the border around the legend
 fig.update_layout(
     barmode='stack',
     xaxis_title='Number of Vehicles',
     yaxis_title='Region',
     legend_title='Vehicle Type',
     template='plotly_white',
-    height=800
+    height=800,
+    legend=dict(borderwidth=0),  # Remove the border around the legend
 )
 
 # Show the Plotly chart in Streamlit
