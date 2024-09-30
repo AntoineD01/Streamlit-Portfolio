@@ -6,6 +6,7 @@ import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
+import plotly.graph_objects as go
 
 
 # Load Data
@@ -89,8 +90,6 @@ elif show_dropoff:
     hour1 = st.slider("Select Hour to Filter Data", 0, 23)
 
     filtered_data2 = data2[data2['tpep_dropoff_datetime'].dt.hour == hour1]
-
-    st.write(filtered_data2.head())
 
     dropoff_counts_by_minute = filtered_data2.set_index('tpep_dropoff_datetime').resample('min').size()
     st.line_chart(dropoff_counts_by_minute, color='#CBF7ED')

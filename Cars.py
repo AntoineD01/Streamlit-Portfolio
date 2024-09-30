@@ -71,7 +71,6 @@ vehicles_over_time = data.groupby('year')['nb_vp_rechargeables_el'].sum().reset_
 fig = px.bar(vehicles_over_time, 
              x='year', 
              y='nb_vp_rechargeables_el', 
-             title='Number of Rechargeable Vehicles Over Time',
              color_discrete_sequence=['#8EA8C3'])  
 
 
