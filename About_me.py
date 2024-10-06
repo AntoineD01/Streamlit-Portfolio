@@ -6,7 +6,7 @@ st.write("**Data Scientist** | **AI Enthusiast** | **Engineer**")
 st.write("Location: Paris, France")
 
 # About Me
-st.header("About Me")
+st.title("🤙 About Me")
 st.write("""
     I am a Data Scientist with a background in engineering. I have worked on numerous projects involving data analysis, 
     predictive modeling, and machine learning. My passion lies in using data to solve complex problems and create 
@@ -15,9 +15,9 @@ st.write("""
 
 
 # Skills
-st.header("Skills Overview")
+st.title("🤹🏻 Skills Overview : ")
 
-st.title('**Programming Languages:**')
+st.title('Programming Languages:')
 st.write("**Python (and related libraries**")
 st.progress(90)
 st.write("**SQL**")
@@ -25,13 +25,13 @@ st.progress(70)
 st.write("**PowerBI**")
 st.progress(50)
 
-st.title('**Machine Learning:**')
+st.title('Machine Learning:')
 st.write("**Scikit-learn**")
 st.progress(65)
 st.write("**XGBoost**")
 st.progress(35)
 
-st.title('**Other Tools:**')
+st.title('Other Tools:')
 st.write("**Git**")
 st.progress(70)
 st.write("**Jupyter**")
@@ -42,7 +42,7 @@ st.write('**Excel**')
 st.progress(75)
 
 # Experience
-st.header("Experience")
+st.title("🧑‍💼 Experience")
 st.write("### Private tutor | Acadomia")
 st.write("""
     - Adaptation to meet individual needs.
@@ -55,10 +55,10 @@ st.write("""
     - Greet and advise customers.
     - Adapt to an intense environment.
     - Display products attractively.
-    """)
+    """)    
 
 # Projects Section
-st.header("Projects")
+st.title("⌨️ Projects")
 st.write("### 1. Uber Data Analysis")
 st.write("""
     In this project, I performed exploratory data analysis on Uber ride data to understand patterns in ride demand, fare trends, 
@@ -72,13 +72,13 @@ st.write("""
     """)
 
 # Education
-st.header("Education")
+st.header("🏫 Education")
 st.write("### Master of Science in Data Engineering | Efrei Paris")
 st.write("2021 - 2026")
 st.progress(80)
 
 # Contact Section
-st.header("Contact Me")
+st.header("📇 Contact Me")
 st.write("Feel free to reach out to me via email or LinkedIn. I'm always open to discussing new opportunities and collaborations!")
 st.write("📧 **Email:** antoine.dupont@efrei.net")
 

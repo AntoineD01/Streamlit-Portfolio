@@ -8,7 +8,7 @@ Los Angeles:1
 Chicago:0
 Paris:0
 Marseille:0
-Dog:1
+Dog:2
 Cat:0
 Elephant:1
 Tiger:0
