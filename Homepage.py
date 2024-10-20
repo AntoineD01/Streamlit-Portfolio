@@ -127,23 +127,34 @@ if st.session_state.activity:
             st.button("Restart Quiz", on_click = click_new_quiz)
     
     elif st.session_state.activity == 'Fun Fact':
-        st.write("### Did you know?")
-        fun_facts = [
-        "Octopuses have three hearts: two pump blood to the gills, while the third pumps it to the rest of the body.",
-        "Bananas are berries: botanically speaking, bananas fit the definition of a berry, while strawberries do not.",
-        "Honey never spoils: archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
-        "A day on Venus is longer than a year: it takes Venus about 243 Earth days to rotate once on its axis but only about 225 Earth days to orbit the sun.",
-        "Wombat poop is cube-shaped: this unique shape prevents their droppings from rolling away and marks their territory.",
-        "The Eiffel Tower can be 15 cm taller in the summer: when the temperature rises, the iron expands, causing the tower to grow slightly.",
-        "Turtles can breathe through their butts: some species of turtles can absorb oxygen through their cloaca, allowing them to stay underwater longer.",
-        "Cows have best friends: research shows that cows are social animals and often have strong bonds with specific companions.",
-        "The human nose can detect over 1 trillion scents: while it's commonly said we can only detect about 10,000 smells, recent research suggests the number is much higher.",
-        "Dolphins have names for each other: they use unique whistles to identify and call out to one another, similar to how humans use names."
-        ]
-        st.write(random.choice(fun_facts))
-        def click_fun_fact():
-            st.write(random.choice(fun_facts))
+        # Initialize the fun_fact in session_state if it doesn't exist
+        if 'fun_fact' not in st.session_state:
+            st.session_state.fun_fact = None
 
+        def click_fun_fact():
+            # Update the fun fact in session_state when the button is clicked
+            fun_facts = [
+                "Octopuses have three hearts: two pump blood to the gills, while the third pumps it to the rest of the body.",
+                "Bananas are berries: botanically speaking, bananas fit the definition of a berry, while strawberries do not.",
+                "Honey never spoils: archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
+                "A day on Venus is longer than a year: it takes Venus about 243 Earth days to rotate once on its axis but only about 225 Earth days to orbit the sun.",
+                "Wombat poop is cube-shaped: this unique shape prevents their droppings from rolling away and marks their territory.",
+                "The Eiffel Tower can be 15 cm taller in the summer: when the temperature rises, the iron expands, causing the tower to grow slightly.",
+                "Turtles can breathe through their butts: some species of turtles can absorb oxygen through their cloaca, allowing them to stay underwater longer.",
+                "Cows have best friends: research shows that cows are social animals and often have strong bonds with specific companions.",
+                "The human nose can detect over 1 trillion scents: while it's commonly said we can only detect about 10,000 smells, recent research suggests the number is much higher.",
+                "Dolphins have names for each other: they use unique whistles to identify and call out to one another, similar to how humans use names."
+            ]
+            st.session_state.fun_fact = random.choice(fun_facts)
+
+        # Display the fun fact section
+        st.write("### Did you know?")
+
+        # Show the current fun fact stored in session_state, if any
+        if st.session_state.fun_fact:
+            st.write(st.session_state.fun_fact)
+
+        # Display the "Next fun fact" button and update fact on click
         st.button("Next fun fact", on_click=click_fun_fact)
 
     elif st.session_state.activity == 'Fun Poll':
