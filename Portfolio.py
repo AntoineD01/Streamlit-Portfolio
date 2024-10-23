@@ -6,7 +6,7 @@ uber_data = st.Page("Uber-data.py", title="Uber Data", icon=":material/dashboard
 
 cars = st.Page("Cars.py", title="Cars", icon=":material/filter:",)
 
-about_me = st.Page("about_me.py", title="About Me", icon=":material/person:",)
+about_me = st.Page("About_me.py", title="About Me", icon=":material/person:",)
 
 
 
