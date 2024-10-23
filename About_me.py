@@ -5,6 +5,17 @@ st.title("Antoine Dupont")
 st.write("**Data Scientist** | **AI Enthusiast** | **Engineer**")
 st.write("Location: Paris, France")
 
+cv_file_path = "Antoine Dupont CV.pdf"
+with open(cv_file_path, "rb") as file:
+    cv_bytes = file.read()
+
+st.download_button(
+    label="📄 Download My CV",
+    data=cv_bytes,
+    file_name="Antoine DUPONT CV.pdf", 
+    mime="application/pdf",  
+)
+
 # About Me
 st.title("🤙 About Me")
 st.write("""

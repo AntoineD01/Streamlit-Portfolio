@@ -2,7 +2,7 @@ import streamlit as st
 
 homepage = st.Page('Homepage.py', title='Home', icon=':material/home:', default=True)
 
-uber_data = st.Page("uber-data.py", title="Uber Data", icon=":material/dashboard:",)
+uber_data = st.Page("Uber-data.py", title="Uber Data", icon=":material/dashboard:",)
 
 cars = st.Page("Cars.py", title="Cars", icon=":material/filter:",)
 
