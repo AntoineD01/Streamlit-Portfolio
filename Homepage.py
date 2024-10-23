@@ -1,7 +1,4 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
-import random
-import os
 
 
 st.title("🏠 Home")
