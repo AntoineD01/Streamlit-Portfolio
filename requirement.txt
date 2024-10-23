@@ -6,5 +6,5 @@ plotly
 scikit-learn
 numpy
 streamlit-folium
-streamlit-drawable-canvas
+streamlit_drawable_canvas
 st-social-media-links
