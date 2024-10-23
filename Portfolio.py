@@ -15,7 +15,7 @@ pg = st.navigation(
         "Home": [homepage],
         "Projects": [uber_data, cars],
         "About me": [about_me],
-    }
+    }   
 )
 
 pg.run()
