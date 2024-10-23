@@ -2,7 +2,14 @@ import streamlit as st
 from streamlit_drawable_canvas import st_canvas
 import random
 import os
+import subprocess
 
+def list_installed_packages():
+    result = subprocess.run(['pip', 'freeze'], stdout=subprocess.PIPE)
+    st.text(result.stdout.decode('utf-8'))
+
+st.title("Installed Packages")
+list_installed_packages()
 
 st.title("🏠 Home")
 st.write("Welcome to My Portfolio!")
